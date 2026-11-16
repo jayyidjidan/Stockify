@@ -1,0 +1,653 @@
+/* ==========================================================================
+   NexaERP Design System — diekstrak dari screenshot "Overview Dashboard"
+   Struktur:
+   1. PRIMITIVE TOKENS   (warna mentah, spacing, radius, font, shadow)
+   2. SEMANTIC TOKENS    (peran warna: brand, text, surface, status, dll.)
+   3. COMPONENT TOKENS   (button, badge, input, card, nav, table, progress)
+   4. COMPONENT STYLES   (class siap pakai)
+   Catatan: nilai hex adalah estimasi visual dari gambar, bukan dari file Figma.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* ==========================================================================
+   1. PRIMITIVE TOKENS
+   ========================================================================== */
+:root {
+  /* ---- Color: Purple (brand) ---- */
+  --purple-50:  #F5F3FF;
+  --purple-100: #EDE9FE;   /* alert banner bg */
+  --purple-200: #DDD6FB;   /* bar "cost" / tinted fill */
+  --purple-300: #C4B8F8;
+  --purple-400: #A08FF0;
+  --purple-500: #7C5CE6;
+  --purple-600: #5B3FD6;   /* primary button, active text, bar "revenue" */
+  --purple-700: #4A31B8;   /* hover */
+  --purple-800: #3A2792;   /* pressed */
+  --purple-900: #2A1C6B;
+
+  /* ---- Color: Neutral ---- */
+  --neutral-0:   #FFFFFF;
+  --neutral-25:  #FAFAFB;  /* table header bg */
+  --neutral-50:  #F5F5F7;  /* app background */
+  --neutral-100: #EFEFF2;  /* sidebar search bg, hover */
+  --neutral-150: #E8E8EC;  /* border default */
+  --neutral-200: #DCDCE1;  /* border strong */
+  --neutral-300: #C5C5CC;
+  --neutral-400: #9A9AA5;  /* placeholder, muted text */
+  --neutral-500: #6B6B76;  /* secondary text */
+  --neutral-700: #3A3A44;
+  --neutral-900: #1A1A1F;  /* primary text */
+  --neutral-canvas: #E4E4E7; /* area luar window (di luar browser frame) */
+
+  /* ---- Color: Green (success) ---- */
+  --green-50:  #ECFDF3;
+  --green-100: #D3F5E0;
+  --green-500: #22B35E;    /* progress fill, sparkline */
+  --green-600: #16A34A;
+  --green-700: #15803D;    /* delta text positif */
+
+  /* ---- Color: Red (danger) ---- */
+  --red-50:  #FEECEC;
+  --red-100: #FBD5D5;
+  --red-500: #E5484D;      /* progress fill, sparkline negatif */
+  --red-600: #D92D3A;
+  --red-700: #B42318;
+  --red-badge: #E5484D;    /* notification dot di sidebar */
+
+  /* ---- Color: Orange (warning) ---- */
+  --orange-50:  #FFF4E8;
+  --orange-100: #FFE4C7;
+  --orange-500: #EA7B2C;   /* progress fill */
+  --orange-600: #D9690F;   /* teks badge Medium */
+
+  /* ---- Color: Blue (info) ---- */
+  --blue-50:  #EAF2FE;
+  --blue-100: #D3E3FC;
+  --blue-500: #3B82F6;
+  --blue-600: #2F6FDB;     /* teks badge In transit */
+
+  /* ---- Color: Macbook window chrome (dekoratif) ---- */
+  --chrome-red:    #FF5F57;
+  --chrome-yellow: #FEBC2E;
+  --chrome-green:  #28C840;
+
+  /* ---- Typography ---- */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --font-size-10: 0.625rem;   /* 10px  section label sidebar (MAIN, INSIGHTS) */
+  --font-size-11: 0.6875rem;  /* 11px  badge, link kecil, table header */
+  --font-size-12: 0.75rem;    /* 12px  body, nav, button */
+  --font-size-13: 0.8125rem;  /* 13px  card title */
+  --font-size-14: 0.875rem;   /* 14px  page title */
+  --font-size-20: 1.25rem;    /* 20px  KPI value */
+  --font-size-22: 1.375rem;   /* 22px  chart total value */
+
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  --line-height-tight:  1.2;
+  --line-height-normal: 1.4;
+
+  --letter-spacing-label: 0.04em;
+
+  /* ---- Spacing (basis 4px) ---- */
+  --space-0:  0;
+  --space-1:  0.25rem;  /*  4 */
+  --space-2:  0.5rem;   /*  8 */
+  --space-3:  0.75rem;  /* 12 */
+  --space-4:  1rem;     /* 16 */
+  --space-5:  1.25rem;  /* 20 */
+  --space-6:  1.5rem;   /* 24 */
+  --space-8:  2rem;     /* 32 */
+
+  /* ---- Radius ---- */
+  --radius-xs:   4px;   /* badge */
+  --radius-sm:   6px;   /* nav item, input */
+  --radius-md:   8px;   /* button, alert banner */
+  --radius-lg:   10px;  /* card */
+  --radius-xl:   14px;  /* app window */
+  --radius-full: 999px;
+
+  /* ---- Border width ---- */
+  --border-width: 1px;
+
+  /* ---- Shadow ---- */
+  --shadow-xs: 0 1px 2px rgba(16, 16, 24, 0.04);
+  --shadow-sm: 0 1px 3px rgba(16, 16, 24, 0.08), 0 1px 2px rgba(16, 16, 24, 0.04);
+  --shadow-md: 0 4px 12px rgba(16, 16, 24, 0.08);
+  --shadow-window: 0 20px 50px rgba(16, 16, 24, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(91, 63, 214, 0.25);
+
+  /* ---- Size (tinggi kontrol) ---- */
+  --size-control-sm: 28px;  /* Alerts, Sync */
+  --size-control-md: 32px;  /* Export, search */
+  --size-sidebar: 232px;
+  --size-icon-sm: 14px;
+  --size-icon-md: 16px;
+
+  /* ---- Motion ---- */
+  --duration-fast: 120ms;
+  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* ==========================================================================
+   2. SEMANTIC TOKENS
+   ========================================================================== */
+:root {
+  /* ---- Brand ---- */
+  --color-brand:            var(--purple-600);
+  --color-brand-hover:      var(--purple-700);
+  --color-brand-pressed:    var(--purple-800);
+  --color-brand-subtle:     var(--purple-100);
+  --color-brand-subtle-2:   var(--purple-200);
+  --color-on-brand:         var(--neutral-0);
+
+  /* ---- Text ---- */
+  --color-text-primary:   var(--neutral-900);
+  --color-text-secondary: var(--neutral-500);
+  --color-text-muted:     var(--neutral-400);
+  --color-text-link:      var(--purple-600);
+  --color-text-inverse:   var(--neutral-0);
+
+  /* ---- Surface ---- */
+  --color-bg-app:       var(--neutral-50);
+  --color-bg-canvas:    var(--neutral-canvas);
+  --color-bg-surface:   var(--neutral-0);
+  --color-bg-subtle:    var(--neutral-25);
+  --color-bg-hover:     var(--neutral-100);
+  --color-bg-input:     var(--neutral-100);
+
+  /* ---- Border ---- */
+  --color-border-default: var(--neutral-150);
+  --color-border-strong:  var(--neutral-200);
+  --color-border-brand:   var(--purple-300);
+  --color-border-focus:   var(--purple-600);
+
+  /* ---- Status: Success ---- */
+  --color-success:         var(--green-500);
+  --color-success-text:    var(--green-700);
+  --color-success-bg:      var(--green-50);
+  --color-success-border:  var(--green-100);
+
+  /* ---- Status: Danger ---- */
+  --color-danger:          var(--red-500);
+  --color-danger-text:     var(--red-600);
+  --color-danger-bg:       var(--red-50);
+  --color-danger-border:   var(--red-100);
+
+  /* ---- Status: Warning ---- */
+  --color-warning:         var(--orange-500);
+  --color-warning-text:    var(--orange-600);
+  --color-warning-bg:      var(--orange-50);
+  --color-warning-border:  var(--orange-100);
+
+  /* ---- Status: Info ---- */
+  --color-info:            var(--blue-500);
+  --color-info-text:       var(--blue-600);
+  --color-info-bg:         var(--blue-50);
+  --color-info-border:     var(--blue-100);
+
+  /* ---- Status: Neutral ---- */
+  --color-neutral-text:    var(--neutral-500);
+  --color-neutral-bg:      var(--neutral-0);
+  --color-neutral-border:  var(--neutral-200);
+
+  /* ---- Notification dot ---- */
+  --color-notification-bg: var(--red-badge);
+  --color-notification-text: var(--neutral-0);
+
+  /* ---- Data visualization ---- */
+  --color-chart-primary:   var(--purple-600);   /* Total Revenue */
+  --color-chart-secondary: var(--purple-200);   /* Total Cost */
+  --color-chart-positive:  var(--green-500);
+  --color-chart-negative:  var(--red-500);
+  --color-chart-warning:   var(--orange-500);
+  --color-chart-grid:      var(--neutral-150);
+  --color-chart-axis-text: var(--neutral-500);
+
+  /* ---- Priority (tabel Orders) ---- */
+  --color-priority-high-text:   var(--red-600);
+  --color-priority-high-bg:     var(--red-50);
+  --color-priority-medium-text: var(--orange-600);
+  --color-priority-medium-bg:   var(--orange-50);
+  --color-priority-low-text:    var(--neutral-500);
+  --color-priority-low-bg:      var(--neutral-0);
+}
+
+/* ==========================================================================
+   3. COMPONENT TOKENS
+   ========================================================================== */
+:root {
+  /* ---- Button: primary (contoh: Export) ---- */
+  --button-primary-bg:          var(--color-brand);
+  --button-primary-bg-hover:    var(--color-brand-hover);
+  --button-primary-bg-pressed:  var(--color-brand-pressed);
+  --button-primary-text:        var(--color-on-brand);
+  --button-primary-border:      transparent;
+
+  /* ---- Button: secondary / outline (contoh: Alerts, Sync) ---- */
+  --button-secondary-bg:         var(--color-bg-surface);
+  --button-secondary-bg-hover:   var(--color-bg-hover);
+  --button-secondary-bg-pressed: var(--neutral-150);
+  --button-secondary-text:       var(--color-text-primary);
+  --button-secondary-border:     var(--color-border-default);
+
+  /* ---- Button: ghost / icon (collapse sidebar, close alert) ---- */
+  --button-ghost-bg:        transparent;
+  --button-ghost-bg-hover:  var(--color-bg-hover);
+  --button-ghost-text:      var(--color-text-secondary);
+
+  /* ---- Button: link (View Alerts, View full report, See all, Details) ---- */
+  --button-link-text:       var(--color-text-link);
+  --button-link-text-hover: var(--color-brand-hover);
+
+  /* ---- Button: disabled ---- */
+  --button-disabled-bg:     var(--neutral-100);
+  --button-disabled-text:   var(--neutral-400);
+
+  /* ---- Button: ukuran ---- */
+  --button-sm-height:  var(--size-control-sm);
+  --button-sm-padding: 0 var(--space-3);
+  --button-md-height:  var(--size-control-md);
+  --button-md-padding: 0 var(--space-3);
+  --button-radius:     var(--radius-md);
+  --button-font-size:  var(--font-size-12);
+  --button-font-weight: var(--font-weight-medium);
+  --button-gap:        var(--space-2);
+
+  /* ---- Card ---- */
+  --card-bg:      var(--color-bg-surface);
+  --card-border:  var(--color-border-default);
+  --card-radius:  var(--radius-lg);
+  --card-padding: var(--space-4);
+  --card-shadow:  var(--shadow-xs);
+
+  /* ---- Badge / status pill ---- */
+  --badge-radius:      var(--radius-xs);
+  --badge-padding:     2px 6px;
+  --badge-font-size:   var(--font-size-11);
+  --badge-font-weight: var(--font-weight-medium);
+
+  /* ---- Input / search ---- */
+  --input-bg:           var(--color-bg-input);
+  --input-border:       var(--color-border-default);
+  --input-border-focus: var(--color-border-focus);
+  --input-text:         var(--color-text-primary);
+  --input-placeholder:  var(--color-text-muted);
+  --input-radius:       var(--radius-md);
+  --input-height:       var(--size-control-md);
+
+  /* ---- Sidebar & nav item ---- */
+  --sidebar-bg:             var(--color-bg-app);
+  --sidebar-border:         var(--color-border-default);
+  --nav-item-text:          var(--color-text-secondary);
+  --nav-item-text-active:   var(--color-text-primary);
+  --nav-item-bg-hover:      var(--color-bg-hover);
+  --nav-item-bg-active:     var(--color-bg-surface);
+  --nav-item-border-active: var(--color-border-default);
+  --nav-item-indicator:     var(--color-brand);
+  --nav-item-height:        32px;
+  --nav-item-radius:        var(--radius-sm);
+  --nav-section-label:      var(--color-text-muted);
+
+  /* ---- Alert banner ---- */
+  --alert-bg:     var(--color-brand-subtle);
+  --alert-border: var(--purple-200);
+  --alert-text:   var(--color-text-primary);
+  --alert-icon:   var(--color-brand);
+  --alert-radius: var(--radius-md);
+
+  /* ---- Table ---- */
+  --table-header-bg:   var(--color-bg-subtle);
+  --table-header-text: var(--color-text-secondary);
+  --table-row-border:  var(--color-border-default);
+  --table-row-hover:   var(--color-bg-subtle);
+  --table-cell-padding: 14px var(--space-4);
+  --table-id-text:     var(--color-text-link);
+
+  /* ---- Progress bar ---- */
+  --progress-track:  var(--neutral-150);
+  --progress-height: 6px;
+  --progress-radius: var(--radius-full);
+
+  /* ---- Tooltip ---- */
+  --tooltip-bg:     var(--color-bg-surface);
+  --tooltip-border: var(--color-border-default);
+  --tooltip-shadow: var(--shadow-md);
+  --tooltip-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   4. COMPONENT STYLES
+   ========================================================================== */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--font-size-12);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  background: var(--color-bg-app);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Typography utilities ---------- */
+.text-page-title   { font-size: var(--font-size-14); font-weight: var(--font-weight-medium); }
+.text-card-title   { font-size: var(--font-size-13); font-weight: var(--font-weight-semibold); }
+.text-kpi          { font-size: var(--font-size-20); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); }
+.text-chart-total  { font-size: var(--font-size-22); font-weight: var(--font-weight-bold); line-height: var(--line-height-tight); }
+.text-body         { font-size: var(--font-size-12); font-weight: var(--font-weight-regular); }
+.text-caption      { font-size: var(--font-size-11); color: var(--color-text-secondary); }
+.text-section-label{
+  font-size: var(--font-size-10);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--nav-section-label);
+}
+.text-positive { color: var(--color-success-text); }
+.text-negative { color: var(--color-danger-text); }
+
+/* ---------- Button (base) ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--button-gap);
+  height: var(--button-md-height);
+  padding: var(--button-md-padding);
+  font-family: inherit;
+  font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
+  line-height: 1;
+  white-space: nowrap;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--button-radius);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--easing-standard),
+              border-color var(--duration-fast) var(--easing-standard);
+}
+.btn:focus-visible { outline: none; box-shadow: var(--shadow-focus); }
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  background: var(--button-disabled-bg);
+  color: var(--button-disabled-text);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+.btn svg { width: var(--size-icon-sm); height: var(--size-icon-sm); flex-shrink: 0; }
+
+/* Sizes */
+.btn--sm { height: var(--button-sm-height); padding: var(--button-sm-padding); }
+.btn--md { height: var(--button-md-height); padding: var(--button-md-padding); }
+
+/* Variant: primary */
+.btn--primary {
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border-color: var(--button-primary-border);
+  box-shadow: var(--shadow-xs);
+}
+.btn--primary:hover:not(:disabled)  { background: var(--button-primary-bg-hover); }
+.btn--primary:active:not(:disabled) { background: var(--button-primary-bg-pressed); }
+
+/* Variant: secondary (outline) */
+.btn--secondary {
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border-color: var(--button-secondary-border);
+}
+.btn--secondary:hover:not(:disabled)  { background: var(--button-secondary-bg-hover); }
+.btn--secondary:active:not(:disabled) { background: var(--button-secondary-bg-pressed); }
+
+/* Variant: ghost */
+.btn--ghost {
+  background: var(--button-ghost-bg);
+  color: var(--button-ghost-text);
+}
+.btn--ghost:hover:not(:disabled) { background: var(--button-ghost-bg-hover); }
+
+/* Variant: icon-only (collapse sidebar, close alert, window controls) */
+.btn--icon {
+  width: var(--button-sm-height);
+  padding: 0;
+}
+
+/* Variant: link (View Alerts, View full report, See all, Details) */
+.btn--link {
+  height: auto;
+  padding: 0;
+  background: transparent;
+  color: var(--button-link-text);
+  font-size: var(--font-size-11);
+  font-weight: var(--font-weight-medium);
+}
+.btn--link:hover { color: var(--button-link-text-hover); text-decoration: underline; }
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--card-bg);
+  border: var(--border-width) solid var(--card-border);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+  box-shadow: var(--card-shadow);
+}
+.card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+/* KPI strip: 4 kolom dibatasi garis vertikal */
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: var(--card-bg);
+  border: var(--border-width) solid var(--card-border);
+  border-radius: var(--card-radius);
+}
+.kpi-strip__item { padding: var(--space-4); }
+.kpi-strip__item + .kpi-strip__item { border-left: var(--border-width) solid var(--card-border); }
+
+/* ---------- Badge ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--badge-padding);
+  font-size: var(--badge-font-size);
+  font-weight: var(--badge-font-weight);
+  line-height: 1.2;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--badge-radius);
+}
+.badge--success { color: var(--color-success-text); background: var(--color-success-bg); border-color: var(--color-success-border); }
+.badge--danger  { color: var(--color-danger-text);  background: var(--color-danger-bg);  border-color: var(--color-danger-border); }
+.badge--warning { color: var(--color-warning-text); background: var(--color-warning-bg); border-color: var(--color-warning-border); }
+.badge--info    { color: var(--color-info-text);    background: var(--color-info-bg);    border-color: var(--color-info-border); }
+.badge--neutral { color: var(--color-neutral-text); background: var(--color-neutral-bg); border-color: var(--color-neutral-border); }
+
+/* Priority (kolom PRIORITY) */
+.badge--priority-high   { color: var(--color-priority-high-text);   background: var(--color-priority-high-bg);   border-color: var(--color-danger-border); }
+.badge--priority-medium { color: var(--color-priority-medium-text); background: var(--color-priority-medium-bg); border-color: var(--color-warning-border); }
+.badge--priority-low    { color: var(--color-priority-low-text);    background: var(--color-priority-low-bg);    border-color: var(--color-neutral-border); }
+
+/* Notification count di sidebar (angka merah bulat) */
+.badge-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-size: var(--font-size-10);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-notification-text);
+  background: var(--color-notification-bg);
+  border-radius: var(--radius-full);
+}
+
+/* Delta chip (contoh: "31.8% Margin") */
+.chip-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 3px 8px;
+  font-size: var(--font-size-11);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-success-text);
+  background: var(--color-success-bg);
+  border: var(--border-width) solid var(--color-success-border);
+  border-radius: var(--radius-xs);
+}
+
+/* ---------- Input / Search ---------- */
+.input {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--input-height);
+  padding: 0 var(--space-3);
+  font-family: inherit;
+  font-size: var(--font-size-12);
+  color: var(--input-text);
+  background: var(--input-bg);
+  border: var(--border-width) solid var(--input-border);
+  border-radius: var(--input-radius);
+}
+.input::placeholder { color: var(--input-placeholder); }
+.input:focus-within,
+.input:focus { outline: none; border-color: var(--input-border-focus); box-shadow: var(--shadow-focus); }
+.input__shortcut {
+  margin-left: auto;
+  padding: 1px 5px;
+  font-size: var(--font-size-10);
+  color: var(--color-text-muted);
+  background: var(--color-bg-surface);
+  border: var(--border-width) solid var(--color-border-default);
+  border-radius: var(--radius-xs);
+}
+
+/* ---------- Sidebar & nav ---------- */
+.sidebar {
+  width: var(--size-sidebar);
+  padding: var(--space-4) var(--space-3);
+  background: var(--sidebar-bg);
+  border-right: var(--border-width) solid var(--sidebar-border);
+}
+.nav-section { margin-top: var(--space-4); }
+.nav-section__label { padding: 0 var(--space-2); margin-bottom: var(--space-1); }
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--nav-item-height);
+  padding: 0 var(--space-2);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-medium);
+  color: var(--nav-item-text);
+  border: var(--border-width) solid transparent;
+  border-radius: var(--nav-item-radius);
+  text-decoration: none;
+  cursor: pointer;
+}
+.nav-item:hover { background: var(--nav-item-bg-hover); }
+.nav-item .badge-count { margin-left: auto; }
+.nav-item--active {
+  color: var(--nav-item-text-active);
+  background: var(--nav-item-bg-active);
+  border-color: var(--nav-item-border-active);
+  box-shadow: var(--shadow-xs);
+}
+.nav-item--active::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--nav-item-indicator);
+  border-radius: 2px;
+}
+
+/* ---------- Alert banner ---------- */
+.alert-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-12);
+  color: var(--alert-text);
+  background: var(--alert-bg);
+  border: var(--border-width) solid var(--alert-border);
+  border-radius: var(--alert-radius);
+}
+.alert-banner__icon { color: var(--alert-icon); }
+.alert-banner__title { font-weight: var(--font-weight-semibold); }
+.alert-banner__action { margin-left: auto; }
+
+/* ---------- Table ---------- */
+.table { width: 100%; border-collapse: collapse; font-size: var(--font-size-12); }
+.table th {
+  padding: 10px var(--space-4);
+  text-align: left;
+  font-size: var(--font-size-11);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-label);
+  color: var(--table-header-text);
+  background: var(--table-header-bg);
+  border-top: var(--border-width) solid var(--table-row-border);
+  border-bottom: var(--border-width) solid var(--table-row-border);
+}
+.table td {
+  padding: var(--table-cell-padding);
+  border-bottom: var(--border-width) solid var(--table-row-border);
+}
+.table tbody tr:hover { background: var(--table-row-hover); }
+.table__id { color: var(--table-id-text); font-weight: var(--font-weight-medium); }
+
+/* ---------- Progress bar (Supply chain health) ---------- */
+.progress {
+  height: var(--progress-height);
+  background: var(--progress-track);
+  border-radius: var(--progress-radius);
+  overflow: hidden;
+}
+.progress__fill { height: 100%; border-radius: var(--progress-radius); background: var(--color-brand); }
+.progress__fill--success { background: var(--color-success); }
+.progress__fill--warning { background: var(--color-warning); }
+.progress__fill--danger  { background: var(--color-danger); }
+
+/* ---------- Tooltip (chart) ---------- */
+.tooltip {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-11);
+  background: var(--tooltip-bg);
+  border: var(--border-width) solid var(--tooltip-border);
+  border-radius: var(--tooltip-radius);
+  box-shadow: var(--tooltip-shadow);
+}
+
+/* ---------- Legend dot (chart) ---------- */
+.legend-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; }
+.legend-dot--primary   { background: var(--color-chart-primary); }
+.legend-dot--secondary { background: var(--color-chart-secondary); }
+
+/* ---------- App window (frame browser) ---------- */
+.app-window {
+  background: var(--color-bg-surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-window);
+  overflow: hidden;
+}
+.window-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.window-dot--close { background: var(--chrome-red); }
+.window-dot--min   { background: var(--chrome-yellow); }
+.window-dot--max   { background: var(--chrome-green); }
