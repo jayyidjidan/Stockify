@@ -1,3 +1,4 @@
+
 name: Stockify CI/CD
 
 on:
@@ -36,7 +37,7 @@ jobs:
         run: npm run build
         working-directory: frontend
 
-deploy:
+  deploy:
     name: Deploy to VPS
     needs: ci
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
