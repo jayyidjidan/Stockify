@@ -25,7 +25,7 @@ jobs:
         working-directory: backend
 
       - name: Run Backend Tests
-        run: npm test -- --passWithNoTests
+        run: npm test -- --runInBand
         working-directory: backend
 
       - name: Install Frontend Dependencies
@@ -35,3 +35,23 @@ jobs:
       - name: Build Frontend
         run: npm run build
         working-directory: frontend
+
+deploy:
+    name: Deploy to VPS
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT }}
+          script: |
+            cd ~/apps/Stockify
+            git pull origin main
+            docker compose --env-file .env.docker up -d --build
+            docker image prune -f
