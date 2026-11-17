@@ -180,7 +180,7 @@ export function Sidebar({ isOpen, onClose }) {
                 STOCKIFY
               </span>
               <span className="text-[10px] text-[#6B6B76] block leading-none">
-                Inventory System
+                Inventory Management
               </span>
             </div>
           </div>
