@@ -17,7 +17,7 @@ describe('Stock Operations Unit Tests', () => {
     process.env.JWT_SECRET = 'test_secret_key_12345';
     staffToken = jwt.sign(
       {
-        id: '22222222-2222-2222-2222-222222222222',
+        id: '650e8400-e29b-41d4-a716-446655440000',
         email: 'staff@stockify.com',
         role: 'Warehouse Staff',
       },
@@ -35,16 +35,16 @@ describe('Stock Operations Unit Tests', () => {
     it('rejects transaction when supplier is inactive', async () => {
       mockClient.query
         .mockResolvedValueOnce({ rows: [] }) // BEGIN
-        .mockResolvedValueOnce({ rows: [{ id: 'sup-1', status: 'inactive' }] }) // supplier check
+        .mockResolvedValueOnce({ rows: [{ id: '550e8400-e29b-41d4-a716-446655440000', status: 'inactive' }] }) // supplier check
         .mockResolvedValueOnce({ rows: [] }); // ROLLBACK
 
       const res = await request(app)
         .post('/api/v1/stock-in')
         .set('Authorization', `Bearer ${staffToken}`)
         .send({
-          supplier_id: '11111111-1111-1111-1111-111111111111',
+          supplier_id: '550e8400-e29b-41d4-a716-446655440000',
           transaction_date: '2026-11-16',
-          items: [{ product_id: '22222222-2222-2222-2222-222222222222', quantity: 10, unit_price: 50000 }],
+          items: [{ product_id: '650e8400-e29b-41d4-a716-446655440000', quantity: 10, unit_price: 50000 }],
         });
 
       expect(res.statusCode).toBe(400);
@@ -57,9 +57,9 @@ describe('Stock Operations Unit Tests', () => {
         .post('/api/v1/stock-in')
         .set('Authorization', `Bearer ${staffToken}`)
         .send({
-          supplier_id: '11111111-1111-1111-1111-111111111111',
+          supplier_id: '550e8400-e29b-41d4-a716-446655440000',
           transaction_date: '2026-11-16',
-          items: [{ product_id: '22222222-2222-2222-2222-222222222222', quantity: 0, unit_price: 50000 }],
+          items: [{ product_id: '650e8400-e29b-41d4-a716-446655440000', quantity: 0, unit_price: 50000 }],
         });
 
       expect(res.statusCode).toBe(400);
@@ -69,8 +69,8 @@ describe('Stock Operations Unit Tests', () => {
     it('successfully processes stock in, increases stock, and records movement', async () => {
       mockClient.query
         .mockResolvedValueOnce({ rows: [] }) // BEGIN
-        .mockResolvedValueOnce({ rows: [{ id: 'sup-1', status: 'active' }] }) // supplier check
-        .mockResolvedValueOnce({ rows: [{ id: 'prod-1', name: 'Product 1', status: 'active' }] }) // product active check
+        .mockResolvedValueOnce({ rows: [{ id: '550e8400-e29b-41d4-a716-446655440000', status: 'active' }] }) // supplier check
+        .mockResolvedValueOnce({ rows: [{ id: '650e8400-e29b-41d4-a716-446655440000', name: 'Product 1', status: 'active' }] }) // product active check
         .mockResolvedValueOnce({ rows: [] }) // generate transaction number search
         .mockResolvedValueOnce({ rows: [{ id: 'tx-1', transaction_number: 'SI-20261116-0001' }] }) // insert header
         .mockResolvedValueOnce({ rows: [{ id: 'item-1', quantity: 10, subtotal: 500000 }] }) // insert item
@@ -83,9 +83,9 @@ describe('Stock Operations Unit Tests', () => {
         .post('/api/v1/stock-in')
         .set('Authorization', `Bearer ${staffToken}`)
         .send({
-          supplier_id: '11111111-1111-1111-1111-111111111111',
+          supplier_id: '550e8400-e29b-41d4-a716-446655440000',
           transaction_date: '2026-11-16',
-          items: [{ product_id: '22222222-2222-2222-2222-222222222222', quantity: 10, unit_price: 50000 }],
+          items: [{ product_id: '650e8400-e29b-41d4-a716-446655440000', quantity: 10, unit_price: 50000 }],
         });
 
       expect(res.statusCode).toBe(201);
@@ -101,7 +101,7 @@ describe('Stock Operations Unit Tests', () => {
         .mockResolvedValueOnce({
           rows: [
             {
-              id: 'prod-1',
+              id: '650e8400-e29b-41d4-a716-446655440000',
               name: 'Laptop ASUS',
               sku: 'ELEC-001',
               current_stock: 5,
@@ -118,7 +118,7 @@ describe('Stock Operations Unit Tests', () => {
           destination: 'Customer Budi',
           transaction_date: '2026-11-16',
           reason: 'Customer Delivery',
-          items: [{ product_id: 'prod-1', quantity: 10 }], // requested 10, only 5 available!
+          items: [{ product_id: '650e8400-e29b-41d4-a716-446655440000', quantity: 10 }], // requested 10, only 5 available!
         });
 
       expect(res.statusCode).toBe(400);
@@ -130,12 +130,12 @@ describe('Stock Operations Unit Tests', () => {
       mockClient.query
         .mockResolvedValueOnce({ rows: [] }) // BEGIN
         .mockResolvedValueOnce({
-          rows: [{ id: 'prod-1', name: 'Laptop ASUS', sku: 'ELEC-001', current_stock: 10, status: 'active' }],
+          rows: [{ id: '650e8400-e29b-41d4-a716-446655440000', name: 'Laptop ASUS', sku: 'ELEC-001', current_stock: 10, status: 'active' }],
         }) // validation check
         .mockResolvedValueOnce({ rows: [] }) // generate transaction number search
-        .mockResolvedValueOnce({ rows: [{ id: 'tx-out-1', transaction_number: 'SO-20261116-0001' }] }) // insert header
+        .mockResolvedValueOnce({ rows: [{ id: '750e8400-e29b-41d4-a716-446655440000', transaction_number: 'SO-20261116-0001' }] }) // insert header
         .mockResolvedValueOnce({ rows: [{ current_stock: 10, selling_price: 100000 }] }) // select for deduction
-        .mockResolvedValueOnce({ rows: [{ id: 'item-out-1', quantity: 4 }] }) // insert item
+        .mockResolvedValueOnce({ rows: [{ id: '850e8400-e29b-41d4-a716-446655440000', quantity: 4 }] }) // insert item
         .mockResolvedValueOnce({ rows: [] }) // update product stock to 6
         .mockResolvedValueOnce({ rows: [] }) // insert movement
         .mockResolvedValueOnce({ rows: [] }); // COMMIT
@@ -147,7 +147,7 @@ describe('Stock Operations Unit Tests', () => {
           destination: 'Customer Budi',
           transaction_date: '2026-11-16',
           reason: 'Customer Delivery',
-          items: [{ product_id: 'prod-1', quantity: 4 }],
+          items: [{ product_id: '650e8400-e29b-41d4-a716-446655440000', quantity: 4 }],
         });
 
       expect(res.statusCode).toBe(201);

@@ -16,11 +16,11 @@ describe('Products API Unit Tests', () => {
     jest.clearAllMocks();
     process.env.JWT_SECRET = 'test_secret_key_12345';
     adminToken = jwt.sign(
-      { id: '11111111-1111-1111-1111-111111111111', email: 'admin@stockify.com', role: 'Admin' },
+      { id: '550e8400-e29b-41d4-a716-446655440000', email: 'admin@stockify.com', role: 'Admin' },
       process.env.JWT_SECRET
     );
     staffToken = jwt.sign(
-      { id: '22222222-2222-2222-2222-222222222222', email: 'staff@stockify.com', role: 'Warehouse Staff' },
+      { id: '650e8400-e29b-41d4-a716-446655440000', email: 'staff@stockify.com', role: 'Warehouse Staff' },
       process.env.JWT_SECRET
     );
   });
@@ -33,7 +33,7 @@ describe('Products API Unit Tests', () => {
         .send({
           name: 'Staff Laptop',
           sku: 'LAP-001',
-          category_id: '33333333-3333-3333-3333-333333333333',
+          category_id: '750e8400-e29b-41d4-a716-446655440000',
           unit: 'unit',
           purchase_price: 5000000,
           selling_price: 6000000,
@@ -70,7 +70,7 @@ describe('Products API Unit Tests', () => {
         .send({
           name: 'Duplicate Laptop',
           sku: 'ELEC-001',
-          category_id: '33333333-3333-3333-3333-333333333333',
+          category_id: '750e8400-e29b-41d4-a716-446655440000',
           unit: 'unit',
           purchase_price: 5000000,
           selling_price: 6000000,
@@ -84,14 +84,14 @@ describe('Products API Unit Tests', () => {
     it('successfully creates product with initial stock 0', async () => {
       pool.query
         .mockResolvedValueOnce({ rows: [] }) // sku unique check passes
-        .mockResolvedValueOnce({ rows: [{ id: '33333333-3333-3333-3333-333333333333', name: 'Electronics' }] }) // category check
+        .mockResolvedValueOnce({ rows: [{ id: '750e8400-e29b-41d4-a716-446655440000', name: 'Electronics' }] }) // category check
         .mockResolvedValueOnce({
           rows: [
             {
-              id: '44444444-4444-4444-4444-444444444444',
+              id: '850e8400-e29b-41d4-a716-446655440000',
               sku: 'NEW-001',
               name: 'New Product',
-              category_id: '33333333-3333-3333-3333-333333333333',
+              category_id: '750e8400-e29b-41d4-a716-446655440000',
               current_stock: 0,
               minimum_stock: 5,
               purchase_price: '5000000.00',
@@ -107,7 +107,7 @@ describe('Products API Unit Tests', () => {
         .send({
           name: 'New Product',
           sku: 'NEW-001',
-          category_id: '33333333-3333-3333-3333-333333333333',
+          category_id: '750e8400-e29b-41d4-a716-446655440000',
           unit: 'unit',
           purchase_price: 5000000,
           selling_price: 6000000,
@@ -127,7 +127,7 @@ describe('Products API Unit Tests', () => {
         .mockResolvedValueOnce({
           rows: [
             {
-              id: '44444444-4444-4444-4444-444444444444',
+              id: '850e8400-e29b-41d4-a716-446655440000',
               sku: 'ELEC-001',
               name: 'ASUS Laptop',
               category_name: 'Electronics',
