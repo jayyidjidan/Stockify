@@ -1,5 +1,4 @@
-
-name: Stockify CI/CD
+name: Stockify CI
 
 on:
   push:
@@ -7,10 +6,18 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: stockify-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ci:
     name: Test and Build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - name: Checkout Repository
@@ -20,13 +27,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
 
       - name: Install Backend Dependencies
         run: npm ci
         working-directory: backend
 
       - name: Run Backend Tests
-        run: npm test -- --runInBand
+        run: npm test
         working-directory: backend
 
       - name: Install Frontend Dependencies
@@ -36,23 +47,3 @@ jobs:
       - name: Build Frontend
         run: npm run build
         working-directory: frontend
-
-  deploy:
-    name: Deploy to VPS
-    needs: ci
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.2.2
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          port: ${{ secrets.VPS_PORT }}
-          script: |
-            cd ~/apps/Stockify
-            git pull origin main
-            docker compose --env-file .env.docker up -d --build
-            docker image prune -f
