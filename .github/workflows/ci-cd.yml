@@ -120,3 +120,49 @@ jobs:
             -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
             devops@161.248.116.8 \
             "sudo /opt/stockify-staging/deploy.sh $GITHUB_SHA"
+
+  deploy-production:
+    name: Deploy to Production
+    needs: [ci, publish, deploy-staging]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    environment:
+      name: production
+      url: https://stockify.web.id
+
+    concurrency:
+      group: stockify-production-deploy
+      cancel-in-progress: false
+
+    steps:
+      - name: Prepare Production SSH
+        env:
+          PRODUCTION_SSH_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+          PRODUCTION_KNOWN_HOSTS: ${{ secrets.PRODUCTION_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -m 700 -d "$HOME/.ssh"
+
+          printf '%s\n' "$PRODUCTION_SSH_KEY" \
+            > "$HOME/.ssh/stockify_production"
+
+          chmod 600 "$HOME/.ssh/stockify_production"
+
+          printf '%s\n' "$PRODUCTION_KNOWN_HOSTS" \
+            > "$HOME/.ssh/known_hosts"
+
+          chmod 600 "$HOME/.ssh/known_hosts"
+
+      - name: Deploy Production
+        run: |
+          set -euo pipefail
+
+          ssh \
+            -i "$HOME/.ssh/stockify_production" \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            devops@161.248.116.8 \
+            "sudo /opt/stockify-production/deploy.sh $GITHUB_SHA"
