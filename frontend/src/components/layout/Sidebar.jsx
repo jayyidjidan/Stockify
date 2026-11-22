@@ -173,11 +173,11 @@ export function Sidebar({ isOpen, onClose }) {
         <div className="h-14 flex items-center px-4 border-b border-[#E8E8EC]">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-[6px] bg-[#5B3FD6] flex items-center justify-center text-white font-bold text-sm">
-              JAV
+              S
             </div>
             <div>
               <span className="font-bold text-[13px] text-[#1A1A1F] tracking-tight block">
-                jav.mv
+                Stockify
               </span>
               <span className="text-[10px] text-[#6B6B76] block leading-none">
                 Inventory Management
