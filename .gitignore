@@ -21,3 +21,14 @@ Thumbs.db
 
 # IDE
 .vscode/
+# Kubernetes secrets and database backups
+k8s/**/secret*.yaml
+k8s/**/secrets*.yaml
+*.dump
+*.backup
+
+# Kubernetes secrets and database backups
+k8s/**/secret*.yaml
+k8s/**/secrets*.yaml
+*.dump
+*.backup
