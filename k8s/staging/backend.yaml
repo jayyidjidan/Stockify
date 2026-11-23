@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stockify-staging-backend
+  namespace: stockify-staging
+  labels:
+    app: stockify-staging-backend
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: stockify-staging-backend
+  template:
+    metadata:
+      labels:
+        app: stockify-staging-backend
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: backend
+          image: ghcr.io/jayyidjidan/stockify-backend:d65dff38f7d9011697aa854c9c72ced80d4a64bb
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "3000"
+            - name: JWT_EXPIRES_IN
+              value: 8h
+            - name: FRONTEND_URL
+              value: https://staging.stockify.web.id
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: stockify-staging-backend-secret
+                  key: DATABASE_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: stockify-staging-backend-secret
+                  key: JWT_SECRET
+          resources:
+            requests:
+              cpu: 100m
+              memory: 96Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/v1/health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: stockify-staging
+spec:
+  type: ClusterIP
+  selector:
+    app: stockify-staging-backend
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http

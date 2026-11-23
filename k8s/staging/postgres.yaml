@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stockify-staging-postgres
+  namespace: stockify-staging
+  labels:
+    app: stockify-staging-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stockify-staging-postgres
+  template:
+    metadata:
+      labels:
+        app: stockify-staging-postgres
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: stockify_staging_db
+            - name: POSTGRES_USER
+              value: stockify_staging
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: stockify-staging-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 384Mi
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - pg_isready -U "$POSTGRES_USER" -d "$POSTGRES_DB"
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: stockify-staging-postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stockify-staging-postgres
+  namespace: stockify-staging
+spec:
+  type: ClusterIP
+  selector:
+    app: stockify-staging-postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: postgres
