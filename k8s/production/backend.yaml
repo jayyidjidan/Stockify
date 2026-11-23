@@ -30,7 +30,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: backend
-          image: ghcr.io/jayyidjidan/stockify-backend:d65dff38f7d9011697aa854c9c72ced80d4a64bb
+          image: ghcr.io/jayyidjidan/stockify-backend:otel-v1
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
@@ -41,6 +41,10 @@ spec:
               value: "production"
             - name: PORT
               value: "3000"
+            - name: OTEL_SERVICE_NAME
+              value: "stockify-backend"
+            - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+              value: "http://161.248.116.8:4318/v1/traces"
             - name: JWT_EXPIRES_IN
               value: "7d"
             - name: FRONTEND_URL

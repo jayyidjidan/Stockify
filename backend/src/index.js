@@ -1,4 +1,8 @@
 require('dotenv').config();
+
+// Initialize OpenTelemetry before loading application modules.
+require('./instrumentation');
+
 const app = require('./app');
 const port = process.env.PORT || 3000;
 
