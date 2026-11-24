@@ -1,6 +1,3 @@
-cd ~/apps/Stockify
-
-cat > README.md <<'EOF'
 # Stockify — End-to-End DevOps Implementation
 
 Stockify is a web-based inventory management application supported by an end-to-end DevOps implementation. This project demonstrates containerization, Kubernetes orchestration, automated CI/CD, autoscaling, and centralized observability.
