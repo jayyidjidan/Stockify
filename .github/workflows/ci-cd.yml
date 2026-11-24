@@ -149,17 +149,6 @@ jobs:
           printf '%s\n' "$PRODUCTION_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
           chmod 600 "$HOME/.ssh/known_hosts"
 
-      - name: Transfer Production Deployment Script
-        run: |
-          set -euo pipefail
-          scp \
-            -i "$HOME/.ssh/stockify_production" \
-            -o BatchMode=yes \
-            -o StrictHostKeyChecking=yes \
-            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
-            scripts/deployment/deploy-production.sh \
-            devops@161.248.116.8:/tmp/deploy-production.sh
-
       - name: Deploy Production to K3s
         run: |
           set -euo pipefail
@@ -169,4 +158,4 @@ jobs:
             -o StrictHostKeyChecking=yes \
             -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
             devops@161.248.116.8 \
-            "sudo install -o root -g root -m 750 /tmp/deploy-production.sh /opt/stockify-production/deploy.sh && sudo rm -f /tmp/deploy-production.sh && sudo /opt/stockify-production/deploy.sh $GITHUB_SHA"
+            "sudo /opt/stockify-production/deploy.sh $GITHUB_SHA"
